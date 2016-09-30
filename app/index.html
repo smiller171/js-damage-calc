@@ -1,0 +1,74 @@
+<body>
+    <form action="/calc_hit/" method="POST" id="rangedForm">
+        <table>
+          <tr>
+            <td >shooting skill</td>
+            <td>
+              <select name="shootingSkill" form="rangedForm" id=shootingSkill>
+                <option value=4>untrained (4)</option>
+                <option value=6>6</option>
+                <option value=8>8</option>
+                <option value=10>10</option>
+                <option value=12>12</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>range</td>
+            <td>
+              <select name="range" form="rangedForm" id=shootingRange>
+                <option value=0>short</option>
+                <option value=2>medium</option>
+                <option value=4>long</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>cover</td>
+            <td>
+              <select name="cover" form="rangedForm" id=cover>
+                <option value=0>None</option>
+                <option value=2>minor</option>
+                <option value=4>substantial</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>specialized</td>
+            <td>
+              <input type="radio" name=specialized value=2 form="rangedForm" checked /> no
+              <input type="radio" name=specialized value=0 form="rangedForm" /> yes
+            </td>
+          </tr>
+          <tr>
+            <td>mods</td>
+            <td><input type="number" name=mods value=0 form="rangedForm" id=mods /></td>
+          </tr>
+        </table>
+        <input type=submit form=rangedForm></input></br>
+    </form>
+    <div style="display:none" id=roll-div>
+    </div>
+    <div style="display:none" id=result-div>
+
+        You rolled a total of <span id=rollResult></span> </br>
+        After factoring for modifiers, you rolled a <span id=result></span>
+        <h1 id=statement></h1>
+    </div>
+</body>
+
+
+<script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDJsYM3pRC8Ha8iVSrN_V6tTL7IuARjd9M",
+    authDomain: "js-damage-calc.firebaseapp.com",
+    databaseURL: "https://js-damage-calc.firebaseio.com",
+    storageBucket: "",
+    messagingSenderId: "493951018251"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="scripts/main.js"></script>
