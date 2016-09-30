@@ -5,13 +5,14 @@ var gulp = require('gulp'),
 
 var jsSources = ['app/scripts/*.js'],
     htmlSources = ['app/**/*.html'],
+    cssSources = ['app/styles/*.css'],
     outputDir = 'dist';
 
 
 gulp.task('build', ['vulcanize']);
 
 gulp.task('autobuild', function() {
-  gulp.watch([htmlSources, jsSources], ['vulcanize']);
+  gulp.watch([htmlSources, jsSources, cssSources], ['vulcanize']);
 });
 
 gulp.task('serve', ['browser-sync'], function () {
@@ -34,6 +35,7 @@ gulp.task('vulcanize', function () {
             excludes: [],
             stripExcludes: false,
             inlineScripts: true,
+            inlineCss: true,
             stripComments: true
         }))
         .pipe(htmlmin({
