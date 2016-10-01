@@ -1,1 +1,4 @@
 select {width: 100%;}
+#username {
+    vertical-align: middle;
+}
