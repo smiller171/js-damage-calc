@@ -1,7 +1,25 @@
 {
     "users": {
         "uid": {
-            ""
+            "saved": [
+                "1",
+                "2",
+                "3"
+            ]
+        },
+        "uid2": {…}
+    },
+    "saved": {
+        "uid": {
+            "1": {
+                "shootingSkill": "",
+                "shootingRange": "",
+                "cover": "",
+                "specialized": "",
+                "mods": ""
+            },
+            "2": {…},
+            "3": {…}
         }
     }
 }
