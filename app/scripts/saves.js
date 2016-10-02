@@ -18,10 +18,12 @@ function writeSaveData(saveName) {
 
 function loadOptionsList() {
     firebase.database().ref('/saved/' + uid).once('value').then(function(snapshot) {
-        var options = $("#loadSelector");
-        $.each(Object.keys(snapshot.val()), function() {
-            options.append($("<option />").val(this).text(this));
-        });
+        if (snapshot.val() != null) {
+            var options = $("#loadSelector");
+            $.each(Object.keys(snapshot.val()), function() {
+                options.append($("<option />").val(this).text(this));
+            });
+        }
     });
 }
 
