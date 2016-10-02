@@ -5,7 +5,21 @@ $(function() {
         event.preventDefault();
         console.log("form submitted!")  // sanity check
         $('#roll-div').empty();
+        getStatVars();
         calc_hit();
+    });
+
+    $('#saveForm').on('submit', function(event){
+        event.preventDefault();
+        var saveName = $("#saveNameField").val();
+        getStatVars();
+        writeSaveData(saveName);
+    });
+
+    $('#loadForm').on('submit', function(event){
+        event.preventDefault();
+        var loadName = $("#loadSelector").val();
+        loadSaveData(loadName);
     });
 
     function aceableRoll(skillLevel) {
@@ -30,14 +44,16 @@ $(function() {
         return result;
     }
 
+    function getStatVars() {
+        shootingSkill = parseInt($('#shootingSkill').val());
+        shootingRange = parseInt($('#shootingRange').val());
+        cover = parseInt($('#cover').val());
+        specialized = parseInt($("input[name=specialized]:checked").val());
+        mods = parseInt($('#mods').val());
+    }
+
     function calc_hit() {
         console.log("submit is working!") // sanity check
-        var shootingSkill = parseInt($('#shootingSkill').val()),
-            shootingRange = parseInt($('#shootingRange').val()),
-            cover = parseInt($('#cover').val()),
-            specialized = parseInt($("input[name=specialized]:checked").val()),
-            mods = parseInt($('#mods').val());
-
         var rollResult = aceableRoll(shootingSkill);
         console.log("rollResult is " + rollResult) // sanity check
 

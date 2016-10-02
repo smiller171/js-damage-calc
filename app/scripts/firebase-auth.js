@@ -29,18 +29,20 @@ initApp = function() {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             // User is signed in.
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var uid = user.uid;
-            var providerData = user.providerData;
+            displayName = user.displayName;
+            email = user.email;
+            emailVerified = user.emailVerified;
+            photoURL = user.photoURL;
+            uid = user.uid;
+            providerData = user.providerData;
+            writeUserData(user.uid, user.displayName, user.email, user.photoURL);
             user.getToken().then(function(accessToken) {
                 $("#userImg").attr('src', photoURL);
                 $("#username").text("Hi " + displayName)
                 $('#userInfo').show();
                 $('#firebaseui-auth-container').hide();
             });
+            loadOptionsList();
         } else {
             // User is signed out.
             $('#firebaseui-auth-container').show();

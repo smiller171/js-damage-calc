@@ -1,6 +1,9 @@
 {
     "users": {
         "uid": {
+            "username": "name",
+            "email": "email",
+            "profile_picture": "photoURL",
             "saved": [
                 "1",
                 "2",
