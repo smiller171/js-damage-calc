@@ -1,15 +1,33 @@
-var gulp = require('gulp'),
+const gulp = require('gulp'),
     browserSync = require('browser-sync').create(),
     vulcanize = require('gulp-vulcanize'),
-    htmlmin = require('gulp-htmlmin');
+    htmlmin = require('gulp-htmlmin'),
+    client = require('firebase-tools'),
+    firebaseRewrites = require('browser-sync-middleware-firebase-rewrites');
 
 var jsSources = ['app/scripts/*.js'],
     htmlSources = ['app/**/*.html'],
     cssSources = ['app/styles/*.css'],
+    appDir = './app/',
     outputDir = 'dist';
 
 
 gulp.task('build', ['vulcanize']);
+
+gulp.task('deploy', function() {
+    client.deploy({
+        project: 'js-damage-calc',
+        token: process.env.FIREBASE_TOKEN,
+        cwd: appDir
+    }).then(function() {
+        console.log('Rules have been deployed!');
+        process.exit(0);
+    }).catch(function(err) {
+        console.log('Rules failed to deploy!');
+        process.exit(1);
+    });
+
+})
 
 gulp.task('autobuild', function() {
   gulp.watch([htmlSources, jsSources, cssSources], ['vulcanize']);
@@ -23,8 +41,14 @@ gulp.task('serve', ['browser-sync'], function () {
 gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
-            baseDir: "./app/"
-        }
+            baseDir: appDir
+        },
+        middleware: [
+            firebaseRewrites({
+                firebase: require('./firebase.json'),
+                baseDir: appDir
+            })
+        ]
     });
 });
 
@@ -55,5 +79,5 @@ gulp.task('vulcanize', function () {
             removeCommentsFromCDATA: true,
             removeCDATASectionsFromCDATA: true
         }))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest(outputDir));
 });
