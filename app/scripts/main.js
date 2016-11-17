@@ -1,4 +1,4 @@
-/* global writeSaveData loadSaveData */
+/* global writeSaveData loadSaveData searchOptions */
 $(function() {
   // Submit post on submit
   $("#rangedForm").on("submit", function(event) {
@@ -31,6 +31,11 @@ $(function() {
     loadSaveData(loadName);
     $("#loadSelector").val("-----");
     $("#loadedIndicator").show();
+  });
+
+  $("#searchField").on("input", function() {
+    var query = $("#searchField").val();
+    searchOptions(query);
   });
 
   function aceableRoll(skillLevel) {

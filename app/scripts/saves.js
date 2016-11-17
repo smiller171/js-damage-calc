@@ -7,6 +7,7 @@
   writeSaveData
   loadOptionsList
   loadSaveData
+  searchOptions
 */
 function writeUserData() {
   firebase.database().ref("users/" + userData.uid).update({
@@ -42,6 +43,23 @@ function loadOptionsList() {
       $("#loadSelector").val("-----");
     }
   });
+}
+
+function searchOptions(query) {
+  var ref = firebase.database().ref("/saved/" + userData.uid);
+  ref.startAt(query).endAt(query + "\uf8ff").orderByKey().limitToFirst(5).once("value", function(snapshot) {
+    if (snapshot.val() != null) {
+      var options = [];
+      $.each(Object.keys(snapshot.val()), function() {
+        options.push("<option value='",
+          this, "'>",
+          this, "</option>");
+      });
+      $("#searchSuggestions").html(options.join(""));
+    }
+  });
+  // console.log(results);
+  // ref.child("tags").startAt(query).endAt(query + "\uf8ff").limit(5);
 }
 
 function loadSaveData(loadName) {

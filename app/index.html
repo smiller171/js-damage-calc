@@ -126,5 +126,19 @@
             </tr>
         </table>
     </form>
+    <form action="/searchForm" id="searchForm">
+        <table>
+            <tr>
+                <td>
+                    Search:
+                </td>
+                <td>
+                    <input type="text" list="searchSuggestions" name="searchField" id="searchField" required>
+                </td>
+            </tr>
+        </table>
+        <datalist id="searchSuggestions">
+        </datalist>
+    </form>
     <div id="firebaseui-auth-container"></div>
 </body>
