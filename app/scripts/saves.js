@@ -1,11 +1,6 @@
 /* global
   firebase
-  uid
-  shootingSkill
-  shootingRange
-  cover
-  specialized
-  mods
+  userData
 */
 /* exported
   writeUserData
@@ -13,26 +8,26 @@
   loadOptionsList
   loadSaveData
 */
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref("users/" + userId).set({
-    username: name,
-    email: email,
-    profile_picture: imageUrl
+function writeUserData() {
+  firebase.database().ref("users/" + userData.uid).update({
+    username: userData.displayName,
+    email: userData.email,
+    profile_picture: userData.photoURL
   });
 }
 
-function writeSaveData(saveName) {
-  firebase.database().ref("saved/" + uid + "/" + saveName).set({
-    "shootingSkill": shootingSkill,
-    "shootingRange": shootingRange,
-    "cover": cover,
-    "specialized": specialized,
-    "mods": mods
+function writeSaveData(saveName, statVars) {
+  firebase.database().ref("saved/" + userData.uid + "/" + saveName).set({
+    "shootingSkill": statVars.shootingSkill,
+    "shootingRange": statVars.shootingRange,
+    "cover": statVars.cover,
+    "specialized": statVars.specialized,
+    "mods": statVars.mods
   });
 }
 
 function loadOptionsList() {
-  firebase.database().ref("/saved/" + uid).once("value").then(function(snapshot) {
+  firebase.database().ref("/saved/" + userData.uid).on("value", function(snapshot) {
     if (snapshot.val() != null) {
       var options = $("#loadSelector");
       $.each(Object.keys(snapshot.val()), function() {
@@ -43,16 +38,19 @@ function loadOptionsList() {
 }
 
 function loadSaveData(loadName) {
-  firebase.database().ref("/saved/" + uid + "/" + loadName).once("value").then(function(snapshot) {
-    var shootingSkill = snapshot.val().shootingSkill,
-      shootingRange = snapshot.val().shootingRange,
-      cover = snapshot.val().cover,
-      specialized = snapshot.val().specialized,
-      mods = snapshot.val().mods;
-    $("#shootingSkill").val(shootingSkill);
-    $("#shootingRange").val(shootingRange);
-    $("#cover").val(cover);
-    $("#mods").val(mods);
-    $("input[name=specialized][value=" + specialized + "]").attr("checked","checked");
+  firebase.database().ref("/saved/" + userData.uid + "/" + loadName).once("value").then(function(snapshot) {
+    var statVars = {
+      shootingSkill: snapshot.val().shootingSkill,
+      shootingRange: snapshot.val().shootingRange,
+      cover: snapshot.val().cover,
+      specialized: snapshot.val().specialized,
+      mods: snapshot.val().mods
+    };
+
+    $("#shootingSkill").val(statVars.shootingSkill);
+    $("#shootingRange").val(statVars.shootingRange);
+    $("#cover").val(statVars.cover);
+    $("#mods").val(statVars.mods);
+    $("input[name=specialized][value=" + statVars.specialized + "]").attr("checked","checked");
   });
 }

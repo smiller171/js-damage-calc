@@ -5,15 +5,14 @@ $(function() {
     event.preventDefault();
     console.log("form submitted!");  // sanity check
     $("#roll-div").empty();
-    getStatVars();
-    calc_hit();
+    calc_hit(getStatVars());
   });
 
   $("#saveForm").on("submit", function(event) {
     event.preventDefault();
     var saveName = $("#saveNameField").val();
     getStatVars();
-    writeSaveData(saveName);
+    writeSaveData(saveName, getStatVars());
   });
 
   $("#loadForm").on("submit", function(event) {
@@ -38,27 +37,30 @@ $(function() {
     return result;
   }
 
-/* exported standardRoll */
-  function standardRoll(skillLevel) {
-    var result = 1 + Math.floor(Math.random() * skillLevel);
-    $("#roll-div").append("<p>You rolled a " + roll + ".</p>");
-    return result;
-  }
+// /* exported standardRoll */
+//   function standardRoll(skillLevel) {
+//     var result = 1 + Math.floor(Math.random() * skillLevel);
+//     $("#roll-div").append("<p>You rolled a " + roll + ".</p>");
+//     return result;
+//   }
 
   function getStatVars() {
-    shootingSkill = parseInt($("#shootingSkill").val());
-    shootingRange = parseInt($("#shootingRange").val());
-    cover = parseInt($("#cover").val());
-    specialized = parseInt($("input[name=specialized]:checked").val());
-    mods = parseInt($("#mods").val());
+    var statVars = {
+      shootingSkill: parseInt($("#shootingSkill").val()),
+      shootingRange: parseInt($("#shootingRange").val()),
+      cover: parseInt($("#cover").val()),
+      specialized: parseInt($("input[name=specialized]:checked").val()),
+      mods: parseInt($("#mods").val())
+    };
+    return statVars;
   }
 
-  function calc_hit() {
+  function calc_hit(statVars) {
     console.log("submit is working!"); // sanity check
-    var rollResult = aceableRoll(shootingSkill);
-    console.log("rollResult is " + rollResult); // sanity check
+    var rollResult = aceableRoll(statVars.shootingSkill);
+    console.log("rollResult is " + statVars.rollResult); // sanity check
 
-    var result = rollResult - shootingRange - cover - specialized + mods;
+    var result = rollResult - statVars.shootingRange - statVars.cover - statVars.specialized + statVars.mods;
     console.log("result is " + result); // sanity check
 
     $("#rollResult").text(rollResult);
