@@ -6,19 +6,31 @@ $(function() {
     console.log("form submitted!");  // sanity check
     $("#roll-div").empty();
     calc_hit(getStatVars());
+    $("#savedIndicator").hide();
+    $("#loadedIndicator").hide();
   });
 
   $("#saveForm").on("submit", function(event) {
     event.preventDefault();
+    $("#roll-div").hide();
+    $("#result-div").hide();
+    $("#loadedIndicator").hide();
     var saveName = $("#saveNameField").val();
     getStatVars();
     writeSaveData(saveName, getStatVars());
+    $("#saveNameField").val("");
+    $("#savedIndicator").show();
   });
 
   $("#loadForm").on("submit", function(event) {
     event.preventDefault();
+    $("#roll-div").hide();
+    $("#result-div").hide();
+    $("#loadedIndicator").hide();
     var loadName = $("#loadSelector").val();
     loadSaveData(loadName);
+    $("#loadSelector").val("-----");
+    $("#loadedIndicator").show();
   });
 
   function aceableRoll(skillLevel) {

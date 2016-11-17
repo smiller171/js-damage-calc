@@ -29,10 +29,17 @@ function writeSaveData(saveName, statVars) {
 function loadOptionsList() {
   firebase.database().ref("/saved/" + userData.uid).on("value", function(snapshot) {
     if (snapshot.val() != null) {
-      var options = $("#loadSelector");
+      var options = [];
       $.each(Object.keys(snapshot.val()), function() {
-        options.append($("<option />").val(this).text(this));
+        options.push("<option value='",
+          this, "'>",
+          this, "</option>");
+
+        // options.append($("<option />").val(this).text(this));
       });
+      $("#loadSelector").html(options.join(""));
+      $("#loadSelector").prepend($("<option />").val("-----").text("-----"));
+      $("#loadSelector").val("-----");
     }
   });
 }
