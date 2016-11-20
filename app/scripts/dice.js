@@ -13,7 +13,8 @@ define(function () {
       results.push(result);
     }
     return results;
-  };
+  }
+  ;
   return {
     roll: roll,
     aceableRoll: aceableRoll

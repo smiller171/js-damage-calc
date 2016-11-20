@@ -25,22 +25,23 @@ describe('Dice', function () {
     }));
   });
   describe('aceableRoll', function () {
-    it('calculates the total if a roll can be aced', sinon.test(function () {
-      var roll = {};
-      var rand = this.stub(Math, 'random');
-      rand.onCall(0).returns(0.5);
-      rand.onCall(1).returns(0.9);
-      rand.onCall(2).returns(0.5);
-      rand.onCall(3).returns(0.9);
-      rand.onCall(4).returns(0.9);
-      rand.onCall(5).returns(0.5);
-      var result = dice.aceableRoll(4);
-      assert.deepEqual(result, [3], 'should return a roll of 3');
-      var result = dice.aceableRoll(4);
-      assert.deepEqual(result, [4,3], 'should return rolls 4,3');
-      var result = dice.aceableRoll(4);
-      assert.deepEqual(result, [4,4,3], 'should return rolls 4,4,3');
-    }));
+    it('calculates the total if a roll can be aced',
+      sinon.test(function () {
+        var rand = this.stub(Math, 'random');
+        rand.onCall(0).returns(0.5);
+        rand.onCall(1).returns(0.9);
+        rand.onCall(2).returns(0.5);
+        rand.onCall(3).returns(0.9);
+        rand.onCall(4).returns(0.9);
+        rand.onCall(5).returns(0.5);
+        var result = dice.aceableRoll(4);
+        assert.deepEqual(result, [3], 'should return a roll of 3');
+        var result = dice.aceableRoll(4);
+        assert.deepEqual(result, [4,3], 'should return rolls 4,3');
+        var result = dice.aceableRoll(4);
+        assert.deepEqual(result, [4,4,3], 'should return rolls 4,4,3');
+      })
+    );
   });
 });
 // describe('Aceable Roll', function () {
