@@ -1,7 +1,10 @@
+plugins:
+  - jasmine
 env:
   browser: true
   es6: true
   jquery: true
+  jasmine: true
 parserOptions:
   sourceType: script
 rules:
@@ -13,7 +16,7 @@ rules:
     - unix
   quotes:
     - error
-    - double
+    - single
   semi:
     - error
     - always

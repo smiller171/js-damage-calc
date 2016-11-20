@@ -1,0 +1,5 @@
+cmd: "gulp"
+errorMatch:
+  - ([\d+]\) )(?<message>.+:(?:\r|\n|.)*?)at.*\((?<file>[\/0-9a-zA-Z\._]+):(?<line>\d+):(?<col>\d+)\)
+  - not ok \d (?<message>.+\n.+)\n\s+at(.|\n)+\((?<file>[\/0-9a-zA-Z\._]+):(?<line>\d+):(?<col>\d+)\)
+  # - \((?<file>[\/0-9a-zA-Z\._]+):(?<line>\d+):(?<col>\d+)\)

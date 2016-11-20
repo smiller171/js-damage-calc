@@ -1,27 +1,45 @@
 /* global require process */
-const gulp = require("gulp");
-const browserSync = require("browser-sync").create();
-const vulcanize = require("gulp-vulcanize");
-const htmlmin = require("gulp-htmlmin");
-const client = require("firebase-tools");
-const firebaseRewrites = require("browser-sync-middleware-firebase-rewrites");
+const gulp = require('gulp');
+const browserSync = require('browser-sync').create();
+const vulcanize = require('gulp-vulcanize');
+const htmlmin = require('gulp-htmlmin');
+const client = require('firebase-tools');
+const firebaseRewrites = require('browser-sync-middleware-firebase-rewrites');
+const mocha = require('gulp-mocha');
+const util = require('gulp-util');
 
-const jsSources = ["app/scripts/*.js"];
-const htmlSources = ["app/**/*.html"];
-const cssSources = ["app/styles/*.css"];
-const appDir = "./app/";
-const outputDir = "dist";
-const files = jsSources.concat(htmlSources, cssSources);
+const jsSources = ['app/scripts/*.js'];
+const htmlSources = ['app/**/*.html'];
+const cssSources = ['app/styles/*.css'];
+const tests = ['test/**/*.js'];
+const appDir = './app/';
+const outputDir = 'dist';
+const files = jsSources.concat(htmlSources, cssSources, tests);
 
-gulp.task("build", ["vulcanize"]);
+gulp.task('default', ['test']);
 
-gulp.task("deploy", function () {
+gulp.task('test', function () {
+  return gulp.src(['test/**/*.js'], { read: false })
+    .pipe(mocha({
+      reporter: 'spec',
+      ui: 'bdd'
+    }))
+        .on('error', util.log);
+});
+
+gulp.task('watch-test', function () {
+  gulp.watch(files, ['test']);
+});
+
+gulp.task('build', ['vulcanize']);
+
+gulp.task('deploy', function () {
   client.deploy({
-    project: "js-damage-calc",
+    project: 'js-damage-calc',
     token: process.env.FIREBASE_TOKEN,
     cwd: appDir
   }).then(function () {
-    console.log("Rules have been deployed!");
+    console.log('Rules have been deployed!');
     process.exit(0);
   }).catch(function (err) {
     if (err) {
@@ -31,33 +49,29 @@ gulp.task("deploy", function () {
   });
 });
 
-gulp.task("autobuild", function () {
-  gulp.watch([htmlSources, jsSources, cssSources], ["vulcanize"]);
+gulp.task('serve', ['browser-sync'], function () {
+  gulp.watch(htmlSources).on('change', browserSync.reload);
+  gulp.watch(jsSources).on('change', browserSync.reload);
 });
 
-gulp.task("serve", ["browser-sync"], function () {
-  gulp.watch(htmlSources).on("change", browserSync.reload);
-  gulp.watch(jsSources).on("change", browserSync.reload);
-});
-
-gulp.task("browser-sync", function () {
+gulp.task('browser-sync', function () {
   browserSync.init(files, {
     server: {
       baseDir: appDir
     },
     middleware: [
       firebaseRewrites({
-        firebase: require("./firebase.json"),
+        firebase: require('./firebase.json'),
         baseDir: appDir
       })
     ]
   });
 });
 
-gulp.task("vulcanize", function () {
-  return gulp.src("app/index.html")
+gulp.task('vulcanize', function () {
+  return gulp.src('app/index.html')
     .pipe(vulcanize({
-      abspath: "",
+      abspath: '',
       excludes: [],
       stripExcludes: false,
       inlineScripts: true,

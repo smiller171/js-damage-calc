@@ -10,7 +10,7 @@
   searchOptions
 */
 function writeUserData() {
-  firebase.database().ref("users/" + userData.uid).update({
+  firebase.database().ref('users/' + userData.uid).update({
     username: userData.displayName,
     email: userData.email,
     profile_picture: userData.photoURL
@@ -18,44 +18,44 @@ function writeUserData() {
 }
 
 function writeSaveData(saveName, statVars) {
-  firebase.database().ref("saved/" + userData.uid + "/" + saveName).set({
-    "shootingSkill": statVars.shootingSkill,
-    "shootingRange": statVars.shootingRange,
-    "cover": statVars.cover,
-    "specialized": statVars.specialized,
-    "mods": statVars.mods
+  firebase.database().ref('saved/' + userData.uid + '/' + saveName).set({
+    'shootingSkill': statVars.shootingSkill,
+    'shootingRange': statVars.shootingRange,
+    'cover': statVars.cover,
+    'specialized': statVars.specialized,
+    'mods': statVars.mods
   });
 }
 
 function loadOptionsList() {
-  firebase.database().ref("/saved/" + userData.uid).on("value", function(snapshot) {
+  firebase.database().ref('/saved/' + userData.uid).on('value', function(snapshot) {
     if (snapshot.val() != null) {
       var options = [];
       $.each(Object.keys(snapshot.val()), function() {
-        options.push("<option value='",
-          this, "'>",
-          this, "</option>");
+        options.push('<option value="',
+          this, '">',
+          this, '</option>');
 
         // options.append($("<option />").val(this).text(this));
       });
-      $("#loadSelector").html(options.join(""));
-      $("#loadSelector").prepend($("<option />").val("-----").text("-----"));
-      $("#loadSelector").val("-----");
+      $('#loadSelector').html(options.join(''));
+      $('#loadSelector').prepend($('<option />').val('-----').text('-----'));
+      $('#loadSelector').val('-----');
     }
   });
 }
 
 function searchOptions(query) {
-  var ref = firebase.database().ref("/saved/" + userData.uid);
-  ref.startAt(query).endAt(query + "\uf8ff").orderByKey().limitToFirst(5).once("value", function(snapshot) {
+  var ref = firebase.database().ref('/saved/' + userData.uid);
+  ref.startAt(query).endAt(query + '\uf8ff').orderByKey().limitToFirst(5).once('value', function(snapshot) {
     if (snapshot.val() != null) {
       var options = [];
       $.each(Object.keys(snapshot.val()), function() {
-        options.push("<option value='",
-          this, "'>",
-          this, "</option>");
+        options.push('<option value=\'',
+          this, '\'>',
+          this, '</option>');
       });
-      $("#searchSuggestions").html(options.join(""));
+      $('#searchSuggestions').html(options.join(''));
     }
   });
   // console.log(results);
@@ -63,7 +63,7 @@ function searchOptions(query) {
 }
 
 function loadSaveData(loadName) {
-  firebase.database().ref("/saved/" + userData.uid + "/" + loadName).once("value").then(function(snapshot) {
+  firebase.database().ref('/saved/' + userData.uid + '/' + loadName).once('value').then(function(snapshot) {
     var statVars = {
       shootingSkill: snapshot.val().shootingSkill,
       shootingRange: snapshot.val().shootingRange,
@@ -72,10 +72,10 @@ function loadSaveData(loadName) {
       mods: snapshot.val().mods
     };
 
-    $("#shootingSkill").val(statVars.shootingSkill);
-    $("#shootingRange").val(statVars.shootingRange);
-    $("#cover").val(statVars.cover);
-    $("#mods").val(statVars.mods);
-    $("input[name=specialized][value=" + statVars.specialized + "]").attr("checked","checked");
+    $('#shootingSkill').val(statVars.shootingSkill);
+    $('#shootingRange').val(statVars.shootingRange);
+    $('#cover').val(statVars.cover);
+    $('#mods').val(statVars.mods);
+    $('input[name=specialized][value=' + statVars.specialized + ']').attr('checked','checked');
   });
 }
